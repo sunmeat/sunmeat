@@ -1,6 +1,4 @@
-### Hi there 👋
-
-<code>👷 speciality: software engineer / full-stack</code><br>
+<code>👷 speciality: software engineer / full-stack</code>
 <code>🎓 lecturer</code>
 <code>💻 languages: c++, c#, java, javascript</code>
 <code>📋 linkedin: [@sunmeat](https://www.linkedin.com/in/sunmeat)</code>
