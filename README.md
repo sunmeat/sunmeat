@@ -7,5 +7,5 @@
 <code>📸 instagram: [@sunme.at](https://www.instagram.com/sunme.at/)</code><br>
 <code>🎤 fun fact: karaoke singer & melodica player</code>
 <h3 align="center">
-<img src="https://readme-typing-svg.herokuapp.com/?lines=%D0%9D%D0%B5+%D0%B1%D0%BE%D0%B9%D1%82%D0%B5%D1%81%D1%8C+%D1%81%D0%BE%D0%B2%D0%B5%D1%80%D1%88%D0%B5%D0%BD%D1%81%D1%82%D0%B2%D0%B0.+;%D0%92%D0%B0%D0%BC+%D0%B2%D1%81%D1%91+%D1%80%D0%B0%D0%B2%D0%BD%D0%BE+%D0%BD%D0%B8%D0%BA%D0%BE%D0%B3%D0%B4%D0%B0+%D0%B5%D0%B3%D0%BE+%D0%BD%D0%B5+%D0%B4%D0%BE%D1%81%D1%82%D0%B8%D1%87%D1%8C...&font=Fira%20Code&center=true&width=380&height=50">
+<img src="https://readme-typing-svg.herokuapp.com/?lines=https://readme-typing-svg.herokuapp.com?font=Macondo&color=5BB0F7&lines=The+trouble+with+programmers+is+that;you+can+never+tell+what+a+programmer+is+doing+;until+it's+too+late.&font=Fira%20Code&center=true&width=380&height=50">
 </h3>
