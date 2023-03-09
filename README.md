@@ -1,5 +1,4 @@
-<code>👷 speciality: software engineer</code>
-<code>🎓 lecturer</code>
+<code>👷 speciality: software engineer, lecturer</code>
 <code>💻 languages: c++, c#, t-sql, java, javascript, php, python, kotlin</code><br>
 <code>📋 linkedin: [@sunmeat](https://www.linkedin.com/in/sunmeat)</code>
 <code>💅 hackerrank: [@sunmeat](https://www.hackerrank.com/sunmeat)</code>
