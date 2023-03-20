@@ -7,8 +7,8 @@
 <code>🎹 hobbies: acrylic painting, karaoke, accordeon/melodica/kalimba</code><br>
 [![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Macondo&color=5BB0F7&lines=roses+are+red;violets+are+blue;unexpected+'%7B';on+line+32)](https://git.io/typing-svg)
 
-how many times this page has been visited:
-![Visit counter of this page](https://moe-counter.glitch.me/get/@:sunmeatGitHub?theme=rule34)
+how many times this page has been visited:<br>
+![Visit counter](https://moe-counter.glitch.me/get/@:sunmeatGitHub?theme=rule34)
 
 #StandWithUkraine
 
