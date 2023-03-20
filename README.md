@@ -13,7 +13,7 @@
 
 #### Stats
 
-![Metrics](https://raw.githubusercontent.com/sunmeat/sunmeat/master/github-metrics.svg))
+![Metrics](https://raw.githubusercontent.com/sunmeat/sunmeat/master/github-metrics.svg)
 
 Visit counter of this page:
 ![Visit counter of this page](https://moe-counter.glitch.me/get/@:sunmeatGitHub?theme=rule34)
