@@ -15,7 +15,7 @@
 
 ![Metrics](https://raw.githubusercontent.com/sunmeat/sunmeat/master/github-metrics.svg))
 
-![Visit counter](https://moe-counter.glitch.me/get/@:sunmeatGitHub?theme=rule34)
+![Visit counter](https://count.getloli.com/get/@:sumeatGitHub?theme=rule34)
 
 #### Holopin badges
 
