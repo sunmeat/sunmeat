@@ -1,4 +1,4 @@
-<code>👷 speciality: software engineer, lecturer, web application development</code><br>
+<code>👷 speciality: software engineer, lecturer, web developer</code><br>
 <code>💻 languages: c++, c#, t-sql, java, javascript, php, python, kotlin</code><br>
 <code>🛠️ frameworks & libraries: stl, sfml, spring, react, angular, electron.js, node.js, .net, javaFX</code><br>
 <code>🎹 hobbies: acrylic painting, karaoke, accordeon/piano/melodica/sopilka/drymba/kalimba/ukulele</code><br>
