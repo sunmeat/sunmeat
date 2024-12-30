@@ -10,3 +10,5 @@ how many times this page has been visited:<br>
 #### Stats
 
 ![Metrics](https://raw.githubusercontent.com/sunmeat/sunmeat/master/github-metrics.svg)
+
+[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=sunmeat&theme=dracula&layout=compact)](https://github.com/anuraghazra/github-readme-stats)
