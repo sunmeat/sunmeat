@@ -1,6 +1,6 @@
 <code>👷 speciality: software engineer, lecturer, web & mobile developer</code><br>
-<code>💻 languages: c++, c#, t-sql, java, typescript, php, python, kotlin, smallbasic, actionscript</code><br>
-<code>🛠️ frameworks & libraries: .net, ef core, dapper, stl, sfml, spring, react, angular, electron.js, node.js, javafx</code><br>
+<code>💻 languages: c++, c#, t-sql, java, javascript, php, python, kotlin, smallbasic, actionscript</code><br>
+<code>🛠️ frameworks & libraries: ef core / asp.net core, dapper, stl, sfml, spring, react, angular, electron.js, node.js, javafx</code><br>
 <code>🎹 hobbies: gardening, coin collecting, board games, acrylic painting, karaoke, accordeon/piano/melodica/sopilka/flute/drymba/kalimba/ukulele/guitar</code><br><br>
 
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=sunmeat&theme=dracula&layout=compact)](https://github.com/anuraghazra/github-readme-stats)
