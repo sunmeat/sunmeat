@@ -8,7 +8,6 @@
   </a>
 </p>
 
-
 <div align="center">
 
 ![Visit counter](https://count.getloli.com/get/@:sunmeatGitHub?theme=rule34)
