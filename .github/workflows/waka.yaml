@@ -1,0 +1,67 @@
+name: Waka Readme Stats
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:        
+
+permissions:
+  contents: write           
+  pull-requests: write      
+
+jobs:
+  update-readme:
+    name: Update README with WakaTime stats
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main              
+          fetch-depth: 0      
+
+      - name: Generate WakaTime stats
+        uses: anmol098/waka-readme-stats@master
+        with:
+          WAKATIME_API_KEY: ${{ secrets.WAKATIME_API_KEY }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+          COMMIT_BY_ME: true
+          COMMIT_USERNAME: github-actions[bot]
+          COMMIT_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          COMMIT_MESSAGE: "chore: update wakatime stats [skip ci]"
+          COMMIT_SINGLE: true
+
+          SHOW_LANGUAGE: true
+          SHOW_OS: false
+          SHOW_EDITORS: true
+          SHOW_PROJECTS: false
+          SHOW_COMMIT: true
+          SHOW_DAYS_OF_WEEK: true
+          SHOW_TIMEZONE: false
+          SHOW_PROFILE_VIEWS: false
+          SHOW_TOTAL_CODE_TIME: true
+          SHOW_UPDATED_DATE: true
+          SHOW_LINES_OF_CODE: true   
+          SHOW_LOC_CHART: false
+          SHOW_SHORT_INFO: false
+
+          # IGNORED_REPOS: "sunmeat/sunmeat,waka-readme-stats"
+          # MAX_REPOS: 10
+          # LOCALE: uk                  
+
+      - name: Create Pull Request with changes
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          commit-message: "chore: update wakatime stats [skip ci]"
+          title: "chore: update README with latest WakaTime statistics"
+          body: |
+            Автоматическое обновление статистики WakaTime.
+            
+            Сгенерировано действием: https://github.com/anmol098/waka-readme-stats
+          branch: auto-update-waka-stats
+          delete-branch: true
+          base: main              
+          labels: automated, stats
+          draft: false
