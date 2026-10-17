@@ -1,0 +1,94 @@
+<?xml version = '1.0'?>
+<DatabaseTemplate name="dbca_template_2024-08-15_04-54-29PM" description="ok1" version="21.0.0.0.0">
+   <CommonAttributes>
+      <option name="OMS" value="true" includeInPDBs="true"/>
+      <option name="JSERVER" value="true" includeInPDBs="true"/>
+      <option name="SPATIAL" value="true" includeInPDBs="true"/>
+      <option name="IMEDIA" value="true" includeInPDBs="true"/>
+      <option name="ORACLE_TEXT" value="true" includeInPDBs="true">
+         <tablespace id="SYSAUX"/>
+      </option>
+      <option name="SAMPLE_SCHEMA" value="false" includeInPDBs="false"/>
+      <option name="CWMLITE" value="true" includeInPDBs="true">
+         <tablespace id="SYSAUX"/>
+      </option>
+      <option name="DV" value="true" includeInPDBs="true"/>
+      <option name="NET_EXTENSIONS" value="true" includeInPDBs="true"/>
+   </CommonAttributes>
+   <Variables/>
+   <CustomScripts Execute="false"/>
+   <InitParamAttributes>
+      <InitParams>
+         <initParam name="db_name" value="XE"/>
+         <initParam name="dispatchers" value="(PROTOCOL=TCP) (SERVICE=XEXDB)"/>
+         <initParam name="audit_file_dest" value="C:\Oracle\XE\admin\XE\adump"/>
+         <initParam name="compatible" value="21.0.0"/>
+         <initParam name="remote_login_passwordfile" value="EXCLUSIVE"/>
+         <initParam name="sga_target" value="699" unit="MB"/>
+         <initParam name="processes" value="320"/>
+         <initParam name="local_listener" value="LISTENER_XE"/>
+         <initParam name="undo_tablespace" value="UNDOTBS1"/>
+         <initParam name="control_files" value="(&quot;C:\Oracle\XE\oradata\XE\control01.ctl&quot;, &quot;C:\Oracle\XE\oradata\XE\control02.ctl&quot;)"/>
+         <initParam name="diagnostic_dest" value="C:\Oracle\XE"/>
+         <initParam name="audit_trail" value="db"/>
+         <initParam name="nls_territory" value="RUSSIA"/>
+         <initParam name="db_block_size" value="8192"/>
+         <initParam name="open_cursors" value="300"/>
+         <initParam name="nls_language" value="RUSSIAN"/>
+         <initParam name="pga_aggregate_target" value="233" unit="MB"/>
+      </InitParams>
+      <MiscParams>
+         <databaseType>MULTIPURPOSE</databaseType>
+         <maxUserConn>20</maxUserConn>
+         <percentageMemTOSGA>40</percentageMemTOSGA>
+         <customSGA>false</customSGA>
+         <dataVaultEnabled>false</dataVaultEnabled>
+         <characterSet>AL32UTF8</characterSet>
+         <nationalCharacterSet>AL16UTF16</nationalCharacterSet>
+         <archiveLogMode>false</archiveLogMode>
+         <initParamFileName>{ORACLE_BASE}\admin\{DB_UNIQUE_NAME}\pfile\init.ora</initParamFileName>
+      </MiscParams>
+      <SPfile useSPFile="true">{ORACLE_BASE}\database\spfile{SID}.ora</SPfile>
+   </InitParamAttributes>
+   <StorageAttributes>
+      <DataFiles>
+         <Location>{ORACLE_HOME}\assistants\dbca\templates\XE_Seed_Database.dfb</Location>
+         <DatafilesEncrypted>false</DatafilesEncrypted>
+         <SourceDBName cdb="true" db_id="2965543281">xe</SourceDBName>
+         <Name id="3" Tablespace="SYSAUX" Contents="PERMANENT" Size="460" autoextend="true" blocksize="8192" con_id="1" datafileEncrypted="false">C:\Oracle\XE\oradata\XE\SYSAUX01.DBF</Name>
+         <Name id="1" Tablespace="SYSTEM" Contents="PERMANENT" Size="1110" autoextend="true" blocksize="8192" con_id="1" datafileEncrypted="false">C:\Oracle\XE\oradata\XE\SYSTEM01.DBF</Name>
+         <Name id="4" Tablespace="UNDOTBS1" Contents="UNDO" Size="25" autoextend="true" blocksize="8192" con_id="1" datafileEncrypted="false">C:\Oracle\XE\oradata\XE\UNDOTBS01.DBF</Name>
+         <Name id="7" Tablespace="USERS" Contents="PERMANENT" Size="5" autoextend="true" blocksize="8192" con_id="1" datafileEncrypted="false">C:\Oracle\XE\oradata\XE\USERS01.DBF</Name>
+      </DataFiles>
+      <TempFiles>
+         <Name id="1" Tablespace="TEMP" Contents="TEMPORARY" Size="20" con_id="1" datafileEncrypted="false">C:\Oracle\XE\oradata\XE\TEMP01.DBF</Name>
+      </TempFiles>
+      <ControlfileAttributes id="Controlfile">
+         <maxDatafiles>1024</maxDatafiles>
+         <maxLogfiles>16</maxLogfiles>
+         <maxLogMembers>3</maxLogMembers>
+         <maxLogHistory>1</maxLogHistory>
+         <maxInstances>8</maxInstances>
+         <image name="control01.ctl" filepath="C:\Oracle\XE\oradata\XE\"/>
+         <image name="control02.ctl" filepath="C:\Oracle\XE\oradata\XE\"/>
+      </ControlfileAttributes>
+      <RedoLogGroupAttributes id="1">
+         <reuse>false</reuse>
+         <fileSize unit="KB">204800</fileSize>
+         <Thread>1</Thread>
+         <member ordinal="0" memberName="redo01.log" filepath="C:\Oracle\XE\oradata\XE\"/>
+      </RedoLogGroupAttributes>
+      <RedoLogGroupAttributes id="2">
+         <reuse>false</reuse>
+         <fileSize unit="KB">204800</fileSize>
+         <Thread>1</Thread>
+         <member ordinal="0" memberName="redo02.log" filepath="C:\Oracle\XE\oradata\XE\"/>
+      </RedoLogGroupAttributes>
+      <RedoLogGroupAttributes id="3">
+         <reuse>false</reuse>
+         <fileSize unit="KB">204800</fileSize>
+         <Thread>1</Thread>
+         <member ordinal="0" memberName="redo03.log" filepath="C:\Oracle\XE\oradata\XE\"/>
+      </RedoLogGroupAttributes>
+   </StorageAttributes>
+</DatabaseTemplate>
