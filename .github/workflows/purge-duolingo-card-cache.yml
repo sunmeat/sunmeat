@@ -1,0 +1,80 @@
+name: Purge Duolingo card cache
+
+on:
+  schedule:
+    - cron: "*/5 7-21 * * *"
+      timezone: "Europe/Kyiv"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  purge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Purge the Duolingo card from GitHub Camo
+        shell: bash
+        run: |
+          python - <<'PY'
+          import time
+          from html.parser import HTMLParser
+          from urllib.request import Request, urlopen
+
+          PROFILE_URL = "https://github.com/sunmeat"
+          ORIGINAL_URL = "https://duostat.vercel.app/api/card?username=taemnus"
+
+          class ImageParser(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.images = []
+
+              def handle_starttag(self, tag, attrs):
+                  if tag.lower() == "img":
+                      self.images.append(dict(attrs))
+
+          for attempt in range(8):
+              request = Request(
+                  PROFILE_URL,
+                  headers={
+                      "User-Agent": "Mozilla/5.0",
+                      "Cache-Control": "no-cache",
+                  },
+              )
+              with urlopen(request, timeout=30) as response:
+                  page = response.read().decode("utf-8", "replace")
+
+              parser = ImageParser()
+              parser.feed(page)
+
+              candidates = []
+              for image in parser.images:
+                  src = image.get("src", "")
+                  canonical = image.get("data-canonical-src", "")
+                  alt = image.get("alt", "")
+                  if (
+                      "camo.githubusercontent.com/" in src
+                      and (
+                          alt == "Duolingo Stats"
+                          or ORIGINAL_URL in canonical
+                          or "duostat.vercel.app/api/card" in canonical
+                      )
+                  ):
+                      candidates.append(src)
+
+              if candidates:
+                  camo_url = candidates[0]
+                  purge = Request(camo_url, method="PURGE")
+                  with urlopen(purge, timeout=30) as response:
+                      result = response.read().decode("utf-8", "replace")
+                      print("GitHub Camo purge response:", result)
+                      if response.status >= 400:
+                          raise RuntimeError("GitHub Camo purge failed")
+                  break
+
+              if attempt == 7:
+                  raise RuntimeError(
+                      "Could not find the Duolingo card's Camo URL on the profile page"
+                  )
+              time.sleep(10)
+          PY
