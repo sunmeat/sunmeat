@@ -1,0 +1,59 @@
+name: Codex & GitHub PR Stats
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 */6 * * *'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/codex-stats.yml'
+      - '.github/scripts/codex_stats.py'
+      - '.github/scripts/test_codex_stats.py'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: codex-readme-stats
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.repository == 'sunmeat/sunmeat'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out profile repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+
+      - name: Run regression tests
+        run: python3 -m unittest discover -s .github/scripts -p 'test_codex_stats.py'
+
+      - name: Calculate this week's public PR statistics
+        run: python3 .github/scripts/codex_stats.py
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CODEX_STATS_OWNER: sunmeat
+
+      - name: Commit updated README if needed
+        run: |
+          if git diff --quiet -- README.md; then
+            echo "README is already up to date."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md
+          git commit -m 'chore: update Codex and GitHub PR stats [skip ci]'
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            git fetch origin main
+            git rebase origin/main
+          done
+          echo 'Failed to push README after 3 attempts.' >&2
+          exit 1
