@@ -264,11 +264,11 @@ PowerShell               1 repo              ░░░░░░░░░░░�
 | Activity | Pull requests | Commits in PRs | Lines added | Lines removed |
 |:--|--:|--:|--:|--:|
 | 🤖 Codex (explicitly identified) | **0** | 0 | +0 | −0 |
-| 📦 All public PR activity | **0** | 0 | +0 | −0 |
+| 📦 All accessible PR activity | **0** | 0 | +0 | −0 |
 
-Recently active public repos scanned: **5** · With new PRs: **0** · With marked Codex PRs: **0**.
+Recently active repos scanned: **5** · With new PRs: **0** · With marked Codex PRs: **0**.
 
-<sub>Only public PRs opened this week are counted. Commits and changed lines reflect current PR totals, not unique authored lines. Codex is identified by a bot author, codex/ branch, explicit codex label, Codex task link or [codex] title. Codex work without these markers appears only in the overall PR row. Models, tokens, session time and private data are not inferred. Add the codex label to Codex-created PRs for reliable tracking.</sub>
+<sub>Only PRs opened this week in repositories accessible to the token are counted. Private-project names and details are not displayed. Commits and changed lines reflect current PR totals, not unique authored lines. Codex is identified by a bot author, codex/ branch, explicit codex label, Codex task link or [codex] title. Codex work without these markers appears only in the overall PR row. Models, tokens, session time and private data are not inferred. Add the codex label to Codex-created PRs for reliable tracking.</sub>
 <!--END_SECTION:codex-github-->
 
 ## 📊 GitHub Stats
