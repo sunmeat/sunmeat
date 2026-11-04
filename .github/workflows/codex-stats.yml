@@ -3,7 +3,8 @@ name: Codex & GitHub PR Stats
 on:
   workflow_dispatch:
   schedule:
-    - cron: '23 */6 * * *'
+    # Every five minutes, offset from minute 0 to reduce GitHub scheduler congestion.
+    - cron: '3-58/5 * * * *'
   push:
     branches: [main]
     paths:

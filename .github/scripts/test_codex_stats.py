@@ -35,6 +35,25 @@ class StatsTests(unittest.TestCase):
         self.assertEqual(ai, {"prs": 1, "commits": 3, "added": 100, "deleted": 20})
         self.assertEqual((inspected, active, identified), (1, 1, 1))
 
+    def test_last_successful_refresh_timestamp_in_utc_and_kyiv(self):
+        counters = {"prs": 0, "commits": 0, "added": 0, "deleted": 0}
+        winter = datetime(2026, 11, 4, 8, 43, 12, tzinfo=timezone.utc)
+        summer = datetime(2026, 7, 1, 8, 3, 0, tzinfo=timezone.utc)
+        winter_section = codex_stats.render(
+            codex_stats.beginning_of_week(winter), winter, counters, counters, 7, 1, 0
+        )
+        summer_section = codex_stats.render(
+            codex_stats.beginning_of_week(summer), summer, counters, counters, 7, 1, 0
+        )
+        self.assertIn(
+            "**Last successful data refresh:** 04 Nov 2026, 08:43:12 UTC · 04 Nov 2026, 10:43:12 EET (Kyiv)",
+            winter_section,
+        )
+        self.assertIn(
+            "**Last successful data refresh:** 01 Jul 2026, 08:03:00 UTC · 01 Jul 2026, 11:03:00 EEST (Kyiv)",
+            summer_section,
+        )
+
     def test_preserves_wakatime_section(self):
         original = ("<!--START_SECTION:waka-->\nwakatime\n<!--END_SECTION:waka-->\n"
                     "<!--START_SECTION:codex-github-->\nold\n<!--END_SECTION:codex-github-->\n")

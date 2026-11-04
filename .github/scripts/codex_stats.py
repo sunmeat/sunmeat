@@ -7,6 +7,7 @@ import re
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
@@ -140,6 +141,9 @@ def collect(since):
 
 
 def render(since, now, total, ai, inspected, active, identified):
+    # Timestamp only successful API collection, never failed or incomplete runs.
+    utc_now = now.astimezone(timezone.utc)
+    kyiv_now = utc_now.astimezone(ZoneInfo("Europe/Kyiv"))
     return "\n".join([
         f"**{since:%d %b} – {now:%d %b %Y} (UTC)** · Week to date (from Monday)",
         "",
@@ -149,6 +153,8 @@ def render(since, now, total, ai, inspected, active, identified):
         f"| 📦 All accessible PR activity | **{total['prs']:,}** | {total['commits']:,} | +{total['added']:,} | −{total['deleted']:,} |",
         "",
         f"Recently active repos scanned: **{inspected}** · With new PRs: **{active}** · With marked Codex PRs: **{identified}**.",
+        "",
+        f"**Last successful data refresh:** {utc_now:%d %b %Y, %H:%M:%S} UTC · {kyiv_now:%d %b %Y, %H:%M:%S %Z} (Kyiv)",
         "",
         "<sub>Only PRs opened this week in repositories accessible to the token are counted. Private-project names and details are not displayed. Commits and changed lines reflect current PR totals, not unique authored lines. Codex is identified by a bot author, codex/ branch, explicit codex label, Codex task link or [codex] title. Codex work without these markers appears only in the overall PR row. Models, tokens, session time and private data are not inferred. Add the codex label to Codex-created PRs for reliable tracking.</sub>",
     ])
@@ -174,7 +180,8 @@ if __name__ == "__main__":
         now = datetime.now(timezone.utc)
         since = beginning_of_week(now)
         total, ai, inspected, active, identified = collect(since)
-        changed = update(render(since, now, total, ai, inspected, active, identified))
+        completed_at = datetime.now(timezone.utc)
+        changed = update(render(since, completed_at, total, ai, inspected, active, identified))
         print(f"Codex: {ai}; PR activity: {total}; repos scanned: {inspected}; updated: {changed}")
     except (RuntimeError, OSError, ValueError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
