@@ -262,6 +262,8 @@ PowerShell               1 repo              ░░░░░░░░░░░�
 
 Recently active repos scanned: **7** · With new PRs: **1** · With marked Codex PRs: **0**.
 
+**Last successful data refresh:** 04 Nov 2026, 08:46:48 UTC · 04 Nov 2026, 10:46:48 EET (Kyiv)
+
 <sub>Only PRs opened this week in repositories accessible to the token are counted. Private-project names and details are not displayed. Commits and changed lines reflect current PR totals, not unique authored lines. Codex is identified by a bot author, codex/ branch, explicit codex label, Codex task link or [codex] title. Codex work without these markers appears only in the overall PR row. Models, tokens, session time and private data are not inferred. Add the codex label to Codex-created PRs for reliable tracking.</sub>
 <!--END_SECTION:codex-github-->
 
