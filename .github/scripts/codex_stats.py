@@ -21,6 +21,48 @@ BOTS = {"chatgpt-codex-connector[bot]", "codex[bot]", "openai-codex[bot]"}
 LABELS = {"codex", "ai:codex", "agent:codex", "openai-codex"}
 SOURCE = re.compile(r"https?://(?:chatgpt\.com|chat\.openai\.com)/codex/(?:tasks?/|t/)", re.I)
 
+# Explicit attribution only; an agent name in ordinary prose is not evidence.
+AGENT_ORDER = ("codex", "claude", "copilot", "cursor", "gemini")
+AGENT_TITLES = {
+    "codex": "🤖 OpenAI Codex",
+    "claude": "🟠 Claude Code",
+    "copilot": "🟣 GitHub Copilot",
+    "cursor": "🔵 Cursor",
+    "gemini": "💎 Gemini",
+}
+AGENT_LABELS = {
+    "claude": {"claude", "claude-code", "ai:claude", "agent:claude"},
+    "copilot": {"copilot", "github-copilot", "ai:copilot", "agent:copilot"},
+    "cursor": {"cursor", "cursor-agent", "ai:cursor", "agent:cursor"},
+    "gemini": {"gemini", "gemini-cli", "ai:gemini", "agent:gemini"},
+}
+AGENT_BOTS = {
+    "claude": {"claude[bot]", "claude-code[bot]"},
+    "copilot": {"copilot-swe-agent[bot]"},
+    "cursor": {"cursor[bot]", "cursor-agent[bot]"},
+    "gemini": {"gemini-code-assist[bot]"},
+}
+AGENT_PREFIXES = {
+    "claude": ("claude/",),
+    "copilot": ("copilot/",),
+    "cursor": ("cursor/",),
+    "gemini": ("gemini/",),
+}
+AGENT_TITLE_MARKERS = {
+    "claude": ("[claude]", "[claude code]"),
+    "copilot": ("[copilot]", "[github copilot]"),
+    "cursor": ("[cursor]",),
+    "gemini": ("[gemini]", "[gemini cli]"),
+}
+AGENT_BODY_MARKERS = {
+    "claude": re.compile(r"generated with\s+(?:\[claude code\]|claude code\b)|https?://(?:claude\.ai/code|claude\.com/claude-code)(?:\b|/)", re.I),
+    "copilot": re.compile(r"generated with\s+(?:\[github copilot\]|github copilot\b)", re.I),
+    "cursor": re.compile(r"generated with\s+(?:\[cursor\]|cursor cloud agent\b)", re.I),
+    "gemini": re.compile(r"generated with\s+(?:\[gemini cli\]|gemini cli\b)", re.I),
+}
+TRAILER = re.compile(r"(?im)^\s*(co-authored-by|ai-tool):\s*(.+?)\s*$")
+AUTOMATED_PROFILE_REPO = OWNER.lower()
+
 
 def api(path, params=None):
     if not TOKEN:
@@ -116,47 +158,175 @@ def is_codex(pr):
             or (pr.get("title") or "").lower().startswith(("[codex]", "codex:")))
 
 
+def identified_pr_agents(pr):
+    """Return only agents supported by explicit PR metadata."""
+    agents = {"codex"} if is_codex(pr) else set()
+    author = ((pr.get("user") or {}).get("login") or "").lower()
+    head = ((pr.get("head") or {}).get("ref") or "").lower()
+    title = (pr.get("title") or "").lower()
+    labels = {str(label.get("name") or "").lower() for label in (pr.get("labels") or [])}
+    body = pr.get("body") or ""
+    for agent in AGENT_ORDER[1:]:
+        if (author in AGENT_BOTS[agent]
+                or any(head.startswith(prefix) for prefix in AGENT_PREFIXES[agent])
+                or bool(labels & AGENT_LABELS[agent])
+                or title.startswith(AGENT_TITLE_MARKERS[agent])
+                or bool(AGENT_BODY_MARKERS[agent].search(body))):
+            agents.add(agent)
+    return agents
+
+
+def agent_from_name(name, email="", login=""):
+    """Require a credible author/co-author marker, not a vague text mention."""
+    name = (name or "").strip().lower()
+    email = (email or "").strip().lower()
+    login = (login or "").strip().lower()
+    if login in BOTS or name in {"openai codex", "codex[bot]"}:
+        return "codex"
+    if login in AGENT_BOTS["copilot"] or name in {"github copilot", "copilot-swe-agent[bot]", "copilot"}:
+        return "copilot"
+    if login in AGENT_BOTS["cursor"] or name in {"cursor agent", "cursor cloud agent", "cursor[bot]"}:
+        return "cursor"
+    if login in AGENT_BOTS["gemini"] or name in {"gemini cli", "gemini code assist", "gemini-code-assist[bot]"}:
+        return "gemini"
+    if login in AGENT_BOTS["claude"] or (
+        (name.startswith("claude ") or name == "claude") and email.endswith("@anthropic.com")
+    ) or name == "claude code":
+        return "claude"
+    return None
+
+
+def identified_commit_agents(commit):
+    """Inspect Git commit author and explicit Co-Authored-By / AI-Tool trailers."""
+    result = set()
+    raw = commit.get("commit") or {}
+    author = raw.get("author") or {}
+    login = (commit.get("author") or {}).get("login") or ""
+    detected = agent_from_name(author.get("name"), author.get("email"), login)
+    if detected:
+        result.add(detected)
+    for key, value in TRAILER.findall(raw.get("message") or ""):
+        if key.lower() == "ai-tool":
+            marker = value.strip().lower()
+            for agent, values in {
+                "codex": {"codex", "openai codex"},
+                "claude": {"claude", "claude code"},
+                "copilot": {"copilot", "github copilot"},
+                "cursor": {"cursor", "cursor cloud agent"},
+                "gemini": {"gemini", "gemini cli", "gemini code assist"},
+            }.items():
+                if marker in values:
+                    result.add(agent)
+        else:
+            coauthor = re.fullmatch(r"(.+?)\s*<([^>]+)>", value)
+            if coauthor:
+                detected = agent_from_name(coauthor.group(1), coauthor.group(2))
+                if detected:
+                    result.add(detected)
+    return result
+
+
+def commits(path, since=None):
+    """Enumerate commit lists; fail closed rather than silently truncating."""
+    params = {"per_page": 100}
+    if since is not None:
+        params["since"] = since.isoformat().replace("+00:00", "Z")
+    for page in range(1, 11):
+        batch = api(path, {**params, "page": page})
+        if not isinstance(batch, list):
+            raise RuntimeError(f"Invalid commit list response: {path}")
+        yield from batch
+        if len(batch) < 100:
+            return
+    raise RuntimeError(f"Commit scan incomplete: {path}")
+
+
+def empty_agents():
+    return {agent: dict(prs=0, commits=0, added=0, deleted=0, default_commits=0)
+            for agent in AGENT_ORDER}
+
+
 def collect(since):
     total = dict(prs=0, commits=0, added=0, deleted=0)
-    ai = dict(prs=0, commits=0, added=0, deleted=0)
+    agent_stats = empty_agents()
     inspected = 0
     active = set()
-    identified = set()
+    identified_repos = set()
+    branch_repos_scanned = 0
     for name in repos(since):
         inspected += 1
         for pr in prs(name, since):
-            detail = api(f"/repos/{quote(OWNER)}/{quote(name)}/pulls/{int(pr['number'])}")
+            pr_path = f"/repos/{quote(OWNER)}/{quote(name)}/pulls/{int(pr['number'])}"
+            detail = api(pr_path)
             if not all(isinstance(detail.get(k), int) for k in ("commits", "additions", "deletions")):
                 raise RuntimeError(f"Missing stats: {name} #{pr['number']}")
             active.add(name)
             total["prs"] += 1
             for key, source in (("commits", "commits"), ("added", "additions"), ("deleted", "deletions")):
                 total[key] += detail[source]
-            if is_codex(pr):
-                identified.add(name)
-                ai["prs"] += 1
+            agents = identified_pr_agents(pr)
+            # Git trailers can identify Claude Code (and other agents) even when
+            # the PR itself was created manually and has no agent label.
+            for commit in commits(pr_path + "/commits"):
+                agents.update(identified_commit_agents(commit))
+            if agents:
+                identified_repos.add(name)
+            for agent in agents:
+                stats = agent_stats[agent]
+                stats["prs"] += 1
                 for key, source in (("commits", "commits"), ("added", "additions"), ("deleted", "deletions")):
-                    ai[key] += detail[source]
-    return total, ai, inspected, len(active), len(identified)
+                    stats[key] += detail[source]
+
+        # Profile README auto-updates every five minutes. Exclude this repo
+        # from default-branch commit attribution to avoid self-inflating metrics.
+        if name.lower() == AUTOMATED_PROFILE_REPO:
+            continue
+        branch_repos_scanned += 1
+        for commit in commits(f"/repos/{quote(OWNER)}/{quote(name)}/commits", since):
+            raw = commit.get("commit") or {}
+            committer = (raw.get("committer") or {}).get("date")
+            if committer and date(committer) < since:
+                continue
+            for agent in identified_commit_agents(commit):
+                agent_stats[agent]["default_commits"] += 1
+    return total, agent_stats, inspected, len(active), len(identified_repos), branch_repos_scanned
 
 
-def render(since, now, total, ai, inspected, active, identified):
-    # Timestamp only successful API collection, never failed or incomplete runs.
+def render(since, now, total, agent_stats, inspected, active, identified, branch_repos):
+    # This timestamp follows a fully successful API collection.
     utc_now = now.astimezone(timezone.utc)
     kyiv_now = utc_now.astimezone(ZoneInfo("Europe/Kyiv"))
+    rows = []
+    for agent in AGENT_ORDER:
+        stats = agent_stats[agent]
+        rows.append(
+            f"| {AGENT_TITLES[agent]} | **{stats['prs']:,}** | {stats['commits']:,} "
+            f"| {stats['default_commits']:,} | +{stats['added']:,} | −{stats['deleted']:,} |"
+        )
     return "\n".join([
         f"**{since:%d %b} – {now:%d %b %Y} (UTC)** · Week to date (from Monday)",
         "",
-        "| Activity | Pull requests | Commits in PRs | Lines added | Lines removed |",
-        "|:--|--:|--:|--:|--:|",
-        f"| 🤖 Codex (explicitly identified) | **{ai['prs']:,}** | {ai['commits']:,} | +{ai['added']:,} | −{ai['deleted']:,} |",
-        f"| 📦 All accessible PR activity | **{total['prs']:,}** | {total['commits']:,} | +{total['added']:,} | −{total['deleted']:,} |",
+        "| AI agent / activity | PRs | Commits in linked PRs | Marked default-branch commits | Lines added (PRs) | Lines removed (PRs) |",
+        "|:--|--:|--:|--:|--:|--:|",
+        *rows,
+        f"| 📦 All accessible PR activity | **{total['prs']:,}** | {total['commits']:,} | — | +{total['added']:,} | −{total['deleted']:,} |",
         "",
-        f"Recently active repos scanned: **{inspected}** · With new PRs: **{active}** · With marked Codex PRs: **{identified}**.",
+        f"Recently active repos scanned: **{inspected}** · With new PRs: **{active}** "
+        f"· With AI-marked PRs: **{identified}** · Default-branch commit scans: **{branch_repos}**.",
         "",
         f"**Last successful data refresh:** {utc_now:%d %b %Y, %H:%M:%S} UTC · {kyiv_now:%d %b %Y, %H:%M:%S %Z} (Kyiv)",
         "",
-        "<sub>Only PRs opened this week in repositories accessible to the token are counted. Private-project names and details are not displayed. Commits and changed lines reflect current PR totals, not unique authored lines. Codex is identified by a bot author, codex/ branch, explicit codex label, Codex task link or [codex] title. Codex work without these markers appears only in the overall PR row. Models, tokens, session time and private data are not inferred. Add the codex label to Codex-created PRs for reliable tracking.</sub>",
+        "<sub>Only PRs opened this week in repositories accessible to the token are counted. "
+        "AI attribution is conservative: explicit bot/branch/label/PR metadata or commit author, "
+        "Co-Authored-By and AI-Tool trailers. The PR columns show whole PR totals, "
+        "not uniquely AI-authored lines. A PR can appear in more than one AI row, "
+        "and default-branch commits can also be in PRs; columns must not be added together. "
+        "Default-branch commits use the week's commit timestamps; the auto-updating profile "
+        "repository is excluded from this separate scan. Local IDE/chat assistance without "
+        "Git markers cannot be detected, including ordinary claude.ai chats. "
+        "Use PR labels codex / claude-code / copilot / cursor / gemini, "
+        "or an AI-Tool: Claude Code (etc.) commit trailer, for reliable attribution. "
+        "No models, tokens or session time are inferred. Private repository names and content are not displayed.</sub>",
     ])
 
 
@@ -179,10 +349,10 @@ if __name__ == "__main__":
     try:
         now = datetime.now(timezone.utc)
         since = beginning_of_week(now)
-        total, ai, inspected, active, identified = collect(since)
+        total, agent_stats, inspected, active, identified, branch_repos = collect(since)
         completed_at = datetime.now(timezone.utc)
-        changed = update(render(since, completed_at, total, ai, inspected, active, identified))
-        print(f"Codex: {ai}; PR activity: {total}; repos scanned: {inspected}; updated: {changed}")
+        changed = update(render(since, completed_at, total, agent_stats, inspected, active, identified, branch_repos))
+        print(f"AI agents: {agent_stats}; PR activity: {total}; repos scanned: {inspected}; updated: {changed}")
     except (RuntimeError, OSError, ValueError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         sys.exit(1)
