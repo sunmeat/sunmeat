@@ -1,0 +1,60 @@
+name: GitHub Repository Language Breakdown
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/repo-languages.yml'
+      - '.github/scripts/repo_languages.py'
+      - '.github/scripts/test_repo_languages.py'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: github-repository-languages
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.repository == 'sunmeat/sunmeat'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out profile repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+
+      - name: Test language reporting and README markers
+        run: python3 -m unittest discover -s .github/scripts -p 'test_repo_languages.py'
+
+      - name: Scan language breakdown for all accessible owned repos
+        run: python3 .github/scripts/repo_languages.py
+        env:
+          GH_TOKEN: ${{ secrets.CODEX_STATS_TOKEN || secrets.GH_TOKEN || github.token }}
+          REPO_LANGUAGES_OWNER: sunmeat
+
+      - name: Commit updated README
+        run: |
+          if git diff --quiet -- README.md; then
+            echo "README is already up to date."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md
+          git commit -m 'chore: refresh hourly GitHub language breakdown [skip ci]'
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            git fetch origin main
+            git rebase origin/main
+          done
+          echo 'Unable to push updated language statistics after three retries.' >&2
+          exit 1

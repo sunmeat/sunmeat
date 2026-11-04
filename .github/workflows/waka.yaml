@@ -33,6 +33,7 @@ jobs:
           COMMIT_SINGLE: true
 
           SHOW_LANGUAGE: true
+          SHOW_LANGUAGE_PER_REPO: false
           SHOW_OS: false
           SHOW_EDITORS: true
           SHOW_PROJECTS: false

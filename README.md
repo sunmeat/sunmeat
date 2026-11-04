@@ -233,21 +233,15 @@ PyCharm                  7 hrs 44 mins       ███████████�
 WebStorm                 4 hrs 13 mins       █████████░░░░░░░░░░░░░░░░   35.34 % 
 ```
 
-**I Mostly Code in C#** 
-
-```text
-JavaScript               41 repos            ██░░░░░░░░░░░░░░░░░░░░░░░   09.79 % 
-HTML                     27 repos            ██░░░░░░░░░░░░░░░░░░░░░░░   06.44 % 
-Python                   21 repos            █░░░░░░░░░░░░░░░░░░░░░░░░   05.01 % 
-TypeScript               15 repos            █░░░░░░░░░░░░░░░░░░░░░░░░   03.58 % 
-PowerShell               1 repo              ░░░░░░░░░░░░░░░░░░░░░░░░░   00.24 % 
-```
-
-
-
 
  Last Updated on 01/11/2026 20:17:56 UTC
 <!--END_SECTION:waka-->
+
+### 🧬 Languages Across My GitHub Repositories
+
+<!--START_SECTION:repo-languages-->
+*Initial inventory queued. The top-10 report will appear here after the first successful GitHub Actions run.*
+<!--END_SECTION:repo-languages-->
 ---
 
 ## 🤖 AI Coding & GitHub Activity
