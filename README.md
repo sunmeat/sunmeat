@@ -250,7 +250,7 @@ PowerShell               1 repo              ░░░░░░░░░░░�
 <!--END_SECTION:waka-->
 ---
 
-## 🤖 Codex & GitHub PR Activity
+## 🤖 AI Coding & GitHub Activity
 
 <!--START_SECTION:codex-github-->
 **02 Nov – 04 Nov 2026 (UTC)** · Week to date (from Monday)

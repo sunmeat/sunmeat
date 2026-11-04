@@ -1,4 +1,4 @@
-name: Codex & GitHub PR Stats
+name: AI Coding & GitHub Stats
 
 on:
   workflow_dispatch:
@@ -33,7 +33,7 @@ jobs:
       - name: Run regression tests
         run: python3 -m unittest discover -s .github/scripts -p 'test_codex_stats.py'
 
-      - name: Calculate this week's public PR statistics
+      - name: Calculate multi-agent PR and default-branch commit statistics
         run: python3 .github/scripts/codex_stats.py
         env:
           GH_TOKEN: ${{ secrets.CODEX_STATS_TOKEN || secrets.GH_TOKEN || github.token }}
@@ -48,7 +48,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add README.md
-          git commit -m 'chore: update Codex and GitHub PR stats [skip ci]'
+          git commit -m 'chore: update AI coding and GitHub stats [skip ci]'
           for attempt in 1 2 3; do
             if git push origin HEAD:main; then
               exit 0
