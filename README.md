@@ -256,6 +256,12 @@ PowerShell               1 repo              ░░░░░░░░░░░�
 <!--END_SECTION:waka-->
 ---
 
+## 🤖 Codex & GitHub PR Activity
+
+<!--START_SECTION:codex-github-->
+_GitHub Action will populate this week's Codex-confirmed and public PR statistics._
+<!--END_SECTION:codex-github-->
+
 ## 📊 GitHub Stats
 
 <p align="center">
