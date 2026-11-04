@@ -51,20 +51,41 @@ def beginning_of_week(now):
 
 
 def repos(since):
-    # /users/:owner/repos returns only public repositories.
-    for page in range(1, 11):
-        batch = api(f"/users/{quote(OWNER)}/repos", {
-            "type": "owner", "sort": "pushed", "direction": "desc", "per_page": 100, "page": page,
-        })
+    # A user PAT can list owned private repos. A repository-scoped Actions
+    # token cannot, so transparently fall back to public-only discovery.
+    use_owned = True
+    page = 1
+    while page <= 10:
+        path = "/user/repos" if use_owned else f"/users/{quote(OWNER)}/repos"
+        params = {
+            "sort": "pushed", "direction": "desc", "per_page": 100, "page": page,
+        }
+        if use_owned:
+            params.update({"visibility": "all", "affiliation": "owner"})
+        else:
+            params["type"] = "owner"
+        try:
+            batch = api(path, params)
+        except RuntimeError as exc:
+            if page == 1 and use_owned and any(
+                phrase in str(exc) for phrase in ("HTTP 401", "HTTP 403", "HTTP 404")
+            ):
+                print("Authenticated repo listing unavailable; using public repos only.", file=sys.stderr)
+                use_owned = False
+                continue
+            raise
         if not isinstance(batch, list):
             raise RuntimeError("Invalid repositories response")
         for repo in batch:
+            if ((repo.get("owner") or {}).get("login") or "").lower() != OWNER.lower():
+                continue
             if date(repo.get("pushed_at")) < since:
                 return
             if not repo.get("archived") and not repo.get("disabled"):
                 yield repo["name"]
         if len(batch) < 100:
             return
+        page += 1
     raise RuntimeError("Repository scan incomplete: >1000 entries")
 
 
@@ -125,11 +146,11 @@ def render(since, now, total, ai, inspected, active, identified):
         "| Activity | Pull requests | Commits in PRs | Lines added | Lines removed |",
         "|:--|--:|--:|--:|--:|",
         f"| 🤖 Codex (explicitly identified) | **{ai['prs']:,}** | {ai['commits']:,} | +{ai['added']:,} | −{ai['deleted']:,} |",
-        f"| 📦 All public PR activity | **{total['prs']:,}** | {total['commits']:,} | +{total['added']:,} | −{total['deleted']:,} |",
+        f"| 📦 All accessible PR activity | **{total['prs']:,}** | {total['commits']:,} | +{total['added']:,} | −{total['deleted']:,} |",
         "",
-        f"Recently active public repos scanned: **{inspected}** · With new PRs: **{active}** · With marked Codex PRs: **{identified}**.",
+        f"Recently active repos scanned: **{inspected}** · With new PRs: **{active}** · With marked Codex PRs: **{identified}**.",
         "",
-        "<sub>Only public PRs opened this week are counted. Commits and changed lines reflect current PR totals, not unique authored lines. Codex is identified by a bot author, codex/ branch, explicit codex label, Codex task link or [codex] title. Codex work without these markers appears only in the overall PR row. Models, tokens, session time and private data are not inferred. Add the codex label to Codex-created PRs for reliable tracking.</sub>",
+        "<sub>Only PRs opened this week in repositories accessible to the token are counted. Private-project names and details are not displayed. Commits and changed lines reflect current PR totals, not unique authored lines. Codex is identified by a bot author, codex/ branch, explicit codex label, Codex task link or [codex] title. Codex work without these markers appears only in the overall PR row. Models, tokens, session time and private data are not inferred. Add the codex label to Codex-created PRs for reliable tracking.</sub>",
     ])
 
 
