@@ -35,7 +35,7 @@ jobs:
       - name: Calculate this week's public PR statistics
         run: python3 .github/scripts/codex_stats.py
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN || github.token }}
+          GH_TOKEN: ${{ secrets.CODEX_STATS_TOKEN || secrets.GH_TOKEN || github.token }}
           CODEX_STATS_OWNER: sunmeat
 
       - name: Commit updated README if needed
