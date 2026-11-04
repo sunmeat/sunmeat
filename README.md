@@ -233,12 +233,6 @@ PyCharm                  7 hrs 44 mins       ███████████�
 WebStorm                 4 hrs 13 mins       █████████░░░░░░░░░░░░░░░░   35.34 % 
 ```
 
-🤖 **AI Coding This Week** 
-
-```text
-No AI Coding Activity Tracked This Week
-```
-
 **I Mostly Code in C#** 
 
 ```text
