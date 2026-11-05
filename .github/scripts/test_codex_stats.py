@@ -1,6 +1,9 @@
 """Offline regression tests for Codex/GitHub README stats."""
+import json
 import tempfile
 import unittest
+from io import BytesIO
+from urllib.error import HTTPError
 from datetime import datetime, timezone
 from pathlib import Path
 from unittest.mock import patch
@@ -88,6 +91,48 @@ class StatsTests(unittest.TestCase):
         self.assertEqual(agents["claude"]["commits"], 2)
         self.assertEqual(agents["claude"]["default_commits"], 1)
         self.assertEqual((inspected, active, identified, branch_repos), (1, 1, 1, 1))
+
+    def test_empty_repository_409_does_not_interrupt_collection(self):
+        def api_error(message):
+            payload = json.dumps({"message": message}).encode("utf-8")
+            return HTTPError("https://api.github.com/test", 409, "Conflict", {}, BytesIO(payload))
+
+        path = "/repos/sunmeat/DjangoProject/commits"
+        with (patch.object(codex_stats, "TOKEN", "test-token"),
+              patch.object(codex_stats, "urlopen",
+                           side_effect=api_error("Git Repository is empty."))):
+            self.assertEqual(list(codex_stats.commits(path)), [])
+
+        # An unrelated 409 must still fail loudly, not silently lose counts.
+        with (patch.object(codex_stats, "TOKEN", "test-token"),
+              patch.object(codex_stats, "urlopen",
+                           side_effect=api_error("Unexpected conflict"))):
+            with self.assertRaisesRegex(RuntimeError, "GitHub HTTP 409"):
+                list(codex_stats.commits(path))
+
+        # Even an empty-repository message on a PR-specific endpoint is not
+        # accepted as evidence that the whole repository is empty.
+        with (patch.object(codex_stats, "TOKEN", "test-token"),
+              patch.object(codex_stats, "urlopen",
+                           side_effect=api_error("Git Repository is empty."))):
+            with self.assertRaisesRegex(RuntimeError, "GitHub HTTP 409"):
+                list(codex_stats.commits("/repos/sunmeat/ai/pulls/15/commits"))
+
+    def test_empty_repository_does_not_block_following_repositories(self):
+        def fake_api(path, params=None):
+            if path == "/repos/sunmeat/DjangoProject/commits":
+                raise codex_stats.EmptyRepositoryError("Git Repository is empty.")
+            return []
+
+        with (patch.object(codex_stats, "repos",
+                           return_value=iter(["DjangoProject", "ai"])),
+              patch.object(codex_stats, "prs", return_value=iter([])),
+              patch.object(codex_stats, "api", side_effect=fake_api)):
+            total, agents, inspected, active, identified, branch_repos = codex_stats.collect(
+                datetime(2026, 11, 2, tzinfo=timezone.utc))
+        self.assertEqual(total["prs"], 0)
+        self.assertEqual((inspected, active, identified, branch_repos), (2, 0, 0, 2))
+        self.assertEqual(agents["codex"]["default_commits"], 0)
 
     def test_profile_repo_default_branch_excluded(self):
         def fake_api(path, params=None):
