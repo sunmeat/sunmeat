@@ -64,6 +64,10 @@ TRAILER = re.compile(r"(?im)^\s*(co-authored-by|ai-tool):\s*(.+?)\s*$")
 AUTOMATED_PROFILE_REPO = OWNER.lower()
 
 
+class EmptyRepositoryError(RuntimeError):
+    """GitHub returns HTTP 409 when an initialized repository has no commits."""
+
+
 def api(path, params=None):
     if not TOKEN:
         raise RuntimeError("Missing GH_TOKEN")
@@ -80,6 +84,17 @@ def api(path, params=None):
         with urlopen(req, timeout=25) as response:
             return json.load(response)
     except HTTPError as exc:
+        # Only an explicit "Git Repository is empty." response for the
+        # repository-level commits endpoint is safely skippable. Other 409s
+        # must still fail the collection instead of hiding incomplete data.
+        if exc.code == 409 and re.fullmatch(r"/repos/[^/]+/[^/]+/commits", path):
+            try:
+                error_body = json.load(exc)
+            except (OSError, ValueError):
+                error_body = {}
+            message = error_body.get("message", "") if isinstance(error_body, dict) else ""
+            if isinstance(message, str) and message.strip().rstrip(".").lower() == "git repository is empty":
+                raise EmptyRepositoryError(f"Repository has no commits: {path}") from exc
         raise RuntimeError(f"GitHub HTTP {exc.code}: {path}") from exc
     except (URLError, ValueError) as exc:
         raise RuntimeError(f"GitHub API failed: {path}: {exc}") from exc
@@ -232,7 +247,13 @@ def commits(path, since=None):
     if since is not None:
         params["since"] = since.isoformat().replace("+00:00", "Z")
     for page in range(1, 11):
-        batch = api(path, {**params, "page": page})
+        try:
+            batch = api(path, {**params, "page": page})
+        except EmptyRepositoryError as exc:
+            if page != 1:
+                raise RuntimeError(f"Unexpected empty repository after page 1: {path}") from exc
+            print(f"Skipping empty Git repository in commit scan: {path}", file=sys.stderr)
+            return
         if not isinstance(batch, list):
             raise RuntimeError(f"Invalid commit list response: {path}")
         yield from batch
