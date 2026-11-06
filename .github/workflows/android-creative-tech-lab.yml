@@ -1,0 +1,68 @@
+name: Android Creative Tech Lab · build and capture
+on:
+  push:
+    branches: [android-creative-tech-lab-2026]
+    paths:
+      - 'android-creative-tech-lab/**'
+      - '.github/workflows/android-creative-tech-lab.yml'
+      - '!android-creative-tech-lab/screenshots/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  screenshots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.6.0'
+      - uses: android-actions/setup-android@v3
+      - name: Install Android SDK 37
+        run: sdkmanager "platforms;android-37" "build-tools;36.0.0"
+      - name: Compile app
+        working-directory: android-creative-tech-lab
+        run: gradle :app:assembleDebug --stacktrace
+      - name: Capture REAL emulator screenshots
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          profile: pixel_6
+          script: |
+            adb install -r android-creative-tech-lab/app/build/outputs/apk/debug/app-debug.apk
+            adb shell am start -n com.example.creativetechlab/.MainActivity
+            sleep 12
+            mkdir -p android-creative-tech-lab/screenshots
+            adb shell screencap -p /sdcard/shot.png
+            adb pull /sdcard/shot.png android-creative-tech-lab/screenshots/01-overview.png
+            adb shell input tap 400 2230
+            sleep 8
+            adb shell screencap -p /sdcard/shot.png
+            adb pull /sdcard/shot.png android-creative-tech-lab/screenshots/02-sceneview.png
+            adb shell input tap 670 2230
+            sleep 4
+            adb shell screencap -p /sdcard/shot.png
+            adb pull /sdcard/shot.png android-creative-tech-lab/screenshots/03-audio.png
+            adb shell input tap 930 2230
+            sleep 4
+            adb shell screencap -p /sdcard/shot.png
+            adb pull /sdcard/shot.png android-creative-tech-lab/screenshots/04-charts.png
+      - name: Upload screenshots artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-real-emulator-screenshots
+          path: android-creative-tech-lab/screenshots/*.png
+      - name: Commit real screenshots back to branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add android-creative-tech-lab/screenshots/*.png
+          git diff --cached --quiet || (git commit -m "docs: capture four actual Android emulator screenshots" && git push)
