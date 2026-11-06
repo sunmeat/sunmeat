@@ -34,9 +34,9 @@ You can also run with a preinstalled Gradle: gradle :app:assembleDebug
 
 ## Screenshots and verification
 
-The screenshots folder is intentionally not populated with fabricated captures. A real screenshot requires a successful install in an emulator or device. The workflow at the repository root (.github/workflows/android-creative-tech-lab.yml) attempts the build and captures four actual emulator PNGs automatically. Check its run status before treating the example as verified.
+The [screenshots](screenshots/) directory contains four **real Pixel emulator captures** created by a successful GitHub Actions workflow. No synthetic mockups are presented as emulator screenshots.
 
-**Verification state:** Dependencies and API wiring researched from upstream READMEs; no local Android SDK was available in the authoring environment, therefore no successful compile or runtime assertion is made here.
+**Verification state (2026-11-06): VERIFIED ON CI.** GitHub Actions [run #42213957654](https://github.com/sunmeat/sunmeat/actions/runs/42213957654) successfully compiled the Android app, installed it, opened it in the Pixel emulator, captured four PNG screenshots and committed them to [screenshots/](screenshots/). This verifies build and screen capture in CI; it is not a substitute for manual interaction testing of every feature.
 
 ## AI-assisted research disclosure
 
