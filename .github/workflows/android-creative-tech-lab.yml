@@ -26,9 +26,10 @@ jobs:
           gradle-version: '9.6.0'
       - name: Install Android SDK 37
         run: |
-          sdkmanager --list | grep "platforms;android-37" | head -8 || true
-          yes | sdkmanager --licenses > /dev/null || true
-          sdkmanager "platforms;android-37.0" "build-tools;36.0.0"
+          SDKMANAGER=$(find "$ANDROID_HOME/cmdline-tools" -type f -name sdkmanager | head -1)
+          "$SDKMANAGER" --list | grep "platforms;android-37" | head -8 || true
+          yes | "$SDKMANAGER" --licenses > /dev/null || true
+          "$SDKMANAGER" "platforms;android-37.0" "build-tools;36.0.0"
       - name: Compile app
         working-directory: android-creative-tech-lab
         run: gradle :app:assembleDebug --stacktrace
