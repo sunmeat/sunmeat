@@ -244,10 +244,10 @@ WebStorm                 4 hrs 13 mins       █████████░░�
 
 | # | Language | Share of code | Distribution | Repositories | Detected size |
 |--:|:--|--:|:--|--:|--:|
-| 1 | Rich Text Format | **46.52%** | █████████░░░░░░░░░░░ | 1 | 14.55 MiB |
+| 1 | Rich Text Format | **46.51%** | █████████░░░░░░░░░░░ | 1 | 14.55 MiB |
 | 2 | Python | **11.90%** | ██░░░░░░░░░░░░░░░░░░ | 35 | 3.72 MiB |
-| 3 | JavaScript | **10.76%** | ██░░░░░░░░░░░░░░░░░░ | 103 | 3.37 MiB |
-| 4 | TypeScript | **7.60%** | ██░░░░░░░░░░░░░░░░░░ | 15 | 2.38 MiB |
+| 3 | JavaScript | **10.78%** | ██░░░░░░░░░░░░░░░░░░ | 103 | 3.37 MiB |
+| 4 | TypeScript | **7.59%** | ██░░░░░░░░░░░░░░░░░░ | 15 | 2.38 MiB |
 | 5 | C++ | **6.51%** | █░░░░░░░░░░░░░░░░░░░ | 49 | 2.04 MiB |
 | 6 | CSS | **5.29%** | █░░░░░░░░░░░░░░░░░░░ | 120 | 1.65 MiB |
 | 7 | C# | **5.17%** | █░░░░░░░░░░░░░░░░░░░ | 87 | 1.62 MiB |
@@ -255,10 +255,10 @@ WebStorm                 4 hrs 13 mins       █████████░░�
 | 9 | Java | **1.57%** | ░░░░░░░░░░░░░░░░░░░░ | 20 | 503.55 KiB |
 | 10 | C | **0.38%** | ░░░░░░░░░░░░░░░░░░░░ | 4 | 121.62 KiB |
 
-**Languages found:** 18 · **Repositories scanned:** 249 (237 with language data, 19 accessible private, 6 forks) · **Detected code:** 31.27 MiB.
+**Languages found:** 18 · **Repositories scanned:** 249 (237 with language data, 19 accessible private, 6 forks) · **Detected code:** 31.28 MiB.
 **Other 8 languages:** 0.26% of detected code.
 
-**Last successful refresh:** 07 Nov 2026, 02:54:02 UTC · 07 Nov 2026, 04:54:02 EET (Kyiv)
+**Last successful refresh:** 07 Nov 2026, 10:20:39 UTC · 07 Nov 2026, 12:20:39 EET (Kyiv)
 
 <sub>Data: GitHub Linguist /languages API. Percentages use detected file bytes across all languages (not only the top ten), not repository counts, lines written, or time spent. All accessible owned repositories are included, including forks and archived repos. Private repos require a permitted token; only aggregate statistics are exposed. GitHub Linguist can exclude generated and vendor code. Scheduled hourly.</sub>
 <!--END_SECTION:repo-languages-->
