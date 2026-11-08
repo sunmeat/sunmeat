@@ -276,11 +276,11 @@ WebStorm                 4 hrs 13 mins       █████████░░�
 | 🟣 GitHub Copilot | **0** | 0 | 0 | +0 | −0 |
 | 🔵 Cursor | **0** | 0 | 0 | +0 | −0 |
 | 💎 Gemini | **0** | 0 | 0 | +0 | −0 |
-| 📦 All accessible PR activity | **53** | 466 | — | +37,246 | −2,567 |
+| 📦 All accessible PR activity | **55** | 469 | — | +37,415 | −2,736 |
 
-Recently active repos scanned: **10** · With new PRs: **2** · With AI-marked PRs: **0** · Default-branch commit scans: **9**.
+Recently active repos scanned: **10** · With new PRs: **3** · With AI-marked PRs: **0** · Default-branch commit scans: **9**.
 
-**Last successful data refresh:** 08 Nov 2026, 02:46:29 UTC · 08 Nov 2026, 04:46:29 EET (Kyiv)
+**Last successful data refresh:** 08 Nov 2026, 09:36:57 UTC · 08 Nov 2026, 11:36:57 EET (Kyiv)
 
 <sub>Only PRs opened this week in repositories accessible to the token are counted. AI attribution is conservative: explicit bot/branch/label/PR metadata or commit author, Co-Authored-By and AI-Tool trailers. The PR columns show whole PR totals, not uniquely AI-authored lines. A PR can appear in more than one AI row, and default-branch commits can also be in PRs; columns must not be added together. Default-branch commits use the week's commit timestamps; the auto-updating profile repository is excluded from this separate scan. Local IDE/chat assistance without Git markers cannot be detected, including ordinary claude.ai chats. Use PR labels codex / claude-code / copilot / cursor / gemini, or an AI-Tool: Claude Code (etc.) commit trailer, for reliable attribution. No models, tokens or session time are inferred. Private repository names and content are not displayed.</sub>
 <!--END_SECTION:codex-github-->
