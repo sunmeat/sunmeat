@@ -245,7 +245,7 @@ WebStorm                 4 hrs 13 mins       █████████░░�
 | # | Language | Share of code | Distribution | Repositories | Detected size |
 |--:|:--|--:|:--|--:|--:|
 | 1 | Rich Text Format | **43.39%** | █████████░░░░░░░░░░░ | 1 | 14.55 MiB |
-| 2 | JavaScript | **12.40%** | ██░░░░░░░░░░░░░░░░░░ | 106 | 4.16 MiB |
+| 2 | JavaScript | **12.41%** | ██░░░░░░░░░░░░░░░░░░ | 106 | 4.16 MiB |
 | 3 | Python | **11.14%** | ██░░░░░░░░░░░░░░░░░░ | 36 | 3.73 MiB |
 | 4 | TypeScript | **9.92%** | ██░░░░░░░░░░░░░░░░░░ | 16 | 3.32 MiB |
 | 5 | C++ | **6.07%** | █░░░░░░░░░░░░░░░░░░░ | 49 | 2.04 MiB |
@@ -258,7 +258,7 @@ WebStorm                 4 hrs 13 mins       █████████░░�
 **Languages found:** 18 · **Repositories scanned:** 253 (240 with language data, 20 accessible private, 6 forks) · **Detected code:** 33.53 MiB.
 **Other 8 languages:** 0.24% of detected code.
 
-**Last successful refresh:** 17 Nov 2026, 14:32:12 UTC · 17 Nov 2026, 16:32:12 EET (Kyiv)
+**Last successful refresh:** 17 Nov 2026, 22:56:45 UTC · 18 Nov 2026, 00:56:45 EET (Kyiv)
 
 <sub>Data: GitHub Linguist /languages API. Percentages use detected file bytes across all languages (not only the top ten), not repository counts, lines written, or time spent. All accessible owned repositories are included, including forks and archived repos. Private repos require a permitted token; only aggregate statistics are exposed. GitHub Linguist can exclude generated and vendor code. Scheduled hourly.</sub>
 <!--END_SECTION:repo-languages-->
