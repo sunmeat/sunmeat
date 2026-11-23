@@ -267,20 +267,20 @@ WebStorm                 4 hrs 13 mins       █████████░░�
 ## 🤖 AI Coding & GitHub Activity
 
 <!--START_SECTION:codex-github-->
-**16 Nov – 22 Nov 2026 (UTC)** · Week to date (from Monday)
+**23 Nov – 23 Nov 2026 (UTC)** · Week to date (from Monday)
 
 | AI agent / activity | PRs | Commits in linked PRs | Marked default-branch commits | Lines added (PRs) | Lines removed (PRs) |
 |:--|--:|--:|--:|--:|--:|
 | 🤖 OpenAI Codex | **0** | 0 | 0 | +0 | −0 |
-| 🟠 Claude Code | **0** | 0 | 11 | +0 | −0 |
+| 🟠 Claude Code | **0** | 0 | 0 | +0 | −0 |
 | 🟣 GitHub Copilot | **0** | 0 | 0 | +0 | −0 |
 | 🔵 Cursor | **0** | 0 | 0 | +0 | −0 |
 | 💎 Gemini | **0** | 0 | 0 | +0 | −0 |
-| 📦 All accessible PR activity | **3** | 3 | — | +3 | −3 |
+| 📦 All accessible PR activity | **0** | 0 | — | +0 | −0 |
 
-Recently active repos scanned: **8** · With new PRs: **1** · With AI-marked PRs: **0** · Default-branch commit scans: **7**.
+Recently active repos scanned: **0** · With new PRs: **0** · With AI-marked PRs: **0** · Default-branch commit scans: **0**.
 
-**Last successful data refresh:** 22 Nov 2026, 19:19:34 UTC · 22 Nov 2026, 21:19:34 EET (Kyiv)
+**Last successful data refresh:** 23 Nov 2026, 00:23:27 UTC · 23 Nov 2026, 02:23:27 EET (Kyiv)
 
 <sub>Only PRs opened this week in repositories accessible to the token are counted. AI attribution is conservative: explicit bot/branch/label/PR metadata or commit author, Co-Authored-By and AI-Tool trailers. The PR columns show whole PR totals, not uniquely AI-authored lines. A PR can appear in more than one AI row, and default-branch commits can also be in PRs; columns must not be added together. Default-branch commits use the week's commit timestamps; the auto-updating profile repository is excluded from this separate scan. Local IDE/chat assistance without Git markers cannot be detected, including ordinary claude.ai chats. Use PR labels codex / claude-code / copilot / cursor / gemini, or an AI-Tool: Claude Code (etc.) commit trailer, for reliable attribution. No models, tokens or session time are inferred. Private repository names and content are not displayed.</sub>
 <!--END_SECTION:codex-github-->
