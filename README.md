@@ -258,7 +258,7 @@ WebStorm                 4 hrs 13 mins       █████████░░�
 **Languages found:** 18 · **Repositories scanned:** 255 (242 with language data, 21 accessible private, 6 forks) · **Detected code:** 34.15 MiB.
 **Other 8 languages:** 0.24% of detected code.
 
-**Last successful refresh:** 23 Nov 2026, 02:52:30 UTC · 23 Nov 2026, 04:52:30 EET (Kyiv)
+**Last successful refresh:** 23 Nov 2026, 12:57:53 UTC · 23 Nov 2026, 14:57:53 EET (Kyiv)
 
 <sub>Data: GitHub Linguist /languages API. Percentages use detected file bytes across all languages (not only the top ten), not repository counts, lines written, or time spent. All accessible owned repositories are included, including forks and archived repos. Private repos require a permitted token; only aggregate statistics are exposed. GitHub Linguist can exclude generated and vendor code. Scheduled hourly.</sub>
 <!--END_SECTION:repo-languages-->
