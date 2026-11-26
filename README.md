@@ -244,21 +244,21 @@ WebStorm                 4 hrs 13 mins       █████████░░�
 
 | # | Language | Share of code | Distribution | Repositories | Detected size |
 |--:|:--|--:|:--|--:|--:|
-| 1 | Rich Text Format | **42.38%** | ████████░░░░░░░░░░░░ | 1 | 14.55 MiB |
-| 2 | JavaScript | **12.20%** | ██░░░░░░░░░░░░░░░░░░ | 107 | 4.19 MiB |
-| 3 | Python | **11.29%** | ██░░░░░░░░░░░░░░░░░░ | 39 | 3.88 MiB |
-| 4 | TypeScript | **11.12%** | ██░░░░░░░░░░░░░░░░░░ | 18 | 3.82 MiB |
-| 5 | C++ | **5.93%** | █░░░░░░░░░░░░░░░░░░░ | 49 | 2.04 MiB |
-| 6 | CSS | **5.46%** | █░░░░░░░░░░░░░░░░░░░ | 123 | 1.88 MiB |
-| 7 | HTML | **4.83%** | █░░░░░░░░░░░░░░░░░░░ | 137 | 1.66 MiB |
-| 8 | C# | **4.78%** | █░░░░░░░░░░░░░░░░░░░ | 88 | 1.64 MiB |
+| 1 | Rich Text Format | **42.22%** | ████████░░░░░░░░░░░░ | 1 | 14.55 MiB |
+| 2 | JavaScript | **12.46%** | ██░░░░░░░░░░░░░░░░░░ | 107 | 4.29 MiB |
+| 3 | Python | **11.25%** | ██░░░░░░░░░░░░░░░░░░ | 39 | 3.88 MiB |
+| 4 | TypeScript | **11.14%** | ██░░░░░░░░░░░░░░░░░░ | 18 | 3.84 MiB |
+| 5 | C++ | **5.91%** | █░░░░░░░░░░░░░░░░░░░ | 49 | 2.04 MiB |
+| 6 | CSS | **5.45%** | █░░░░░░░░░░░░░░░░░░░ | 123 | 1.88 MiB |
+| 7 | HTML | **4.81%** | █░░░░░░░░░░░░░░░░░░░ | 137 | 1.66 MiB |
+| 8 | C# | **4.76%** | █░░░░░░░░░░░░░░░░░░░ | 88 | 1.64 MiB |
 | 9 | Java | **1.43%** | ░░░░░░░░░░░░░░░░░░░░ | 20 | 503.55 KiB |
-| 10 | C | **0.35%** | ░░░░░░░░░░░░░░░░░░░░ | 4 | 121.62 KiB |
+| 10 | C | **0.34%** | ░░░░░░░░░░░░░░░░░░░░ | 4 | 121.62 KiB |
 
-**Languages found:** 18 · **Repositories scanned:** 257 (244 with language data, 21 accessible private, 6 forks) · **Detected code:** 34.33 MiB.
+**Languages found:** 18 · **Repositories scanned:** 257 (244 with language data, 21 accessible private, 6 forks) · **Detected code:** 34.46 MiB.
 **Other 8 languages:** 0.23% of detected code.
 
-**Last successful refresh:** 26 Nov 2026, 09:37:10 UTC · 26 Nov 2026, 11:37:10 EET (Kyiv)
+**Last successful refresh:** 26 Nov 2026, 19:41:43 UTC · 26 Nov 2026, 21:41:43 EET (Kyiv)
 
 <sub>Data: GitHub Linguist /languages API. Percentages use detected file bytes across all languages (not only the top ten), not repository counts, lines written, or time spent. All accessible owned repositories are included, including forks and archived repos. Private repos require a permitted token; only aggregate statistics are exposed. GitHub Linguist can exclude generated and vendor code. Scheduled hourly.</sub>
 <!--END_SECTION:repo-languages-->
