@@ -244,8 +244,8 @@ WebStorm                 4 hrs 13 mins       █████████░░�
 
 | # | Language | Share of code | Distribution | Repositories | Detected size |
 |--:|:--|--:|:--|--:|--:|
-| 1 | Rich Text Format | **41.51%** | ████████░░░░░░░░░░░░ | 1 | 14.55 MiB |
-| 2 | JavaScript | **13.06%** | ███░░░░░░░░░░░░░░░░░ | 108 | 4.58 MiB |
+| 1 | Rich Text Format | **41.49%** | ████████░░░░░░░░░░░░ | 1 | 14.55 MiB |
+| 2 | JavaScript | **13.10%** | ███░░░░░░░░░░░░░░░░░ | 108 | 4.60 MiB |
 | 3 | TypeScript | **11.48%** | ██░░░░░░░░░░░░░░░░░░ | 21 | 4.02 MiB |
 | 4 | Python | **11.06%** | ██░░░░░░░░░░░░░░░░░░ | 39 | 3.88 MiB |
 | 5 | C++ | **5.81%** | █░░░░░░░░░░░░░░░░░░░ | 49 | 2.04 MiB |
@@ -255,10 +255,10 @@ WebStorm                 4 hrs 13 mins       █████████░░�
 | 9 | Java | **1.40%** | ░░░░░░░░░░░░░░░░░░░░ | 20 | 503.55 KiB |
 | 10 | C | **0.34%** | ░░░░░░░░░░░░░░░░░░░░ | 4 | 121.62 KiB |
 
-**Languages found:** 18 · **Repositories scanned:** 260 (247 with language data, 22 accessible private, 6 forks) · **Detected code:** 35.05 MiB.
+**Languages found:** 18 · **Repositories scanned:** 260 (247 with language data, 22 accessible private, 6 forks) · **Detected code:** 35.07 MiB.
 **Other 8 languages:** 0.23% of detected code.
 
-**Last successful refresh:** 28 Nov 2026, 03:57:30 UTC · 28 Nov 2026, 05:57:30 EET (Kyiv)
+**Last successful refresh:** 28 Nov 2026, 13:08:03 UTC · 28 Nov 2026, 15:08:03 EET (Kyiv)
 
 <sub>Data: GitHub Linguist /languages API. Percentages use detected file bytes across all languages (not only the top ten), not repository counts, lines written, or time spent. All accessible owned repositories are included, including forks and archived repos. Private repos require a permitted token; only aggregate statistics are exposed. GitHub Linguist can exclude generated and vendor code. Scheduled hourly.</sub>
 <!--END_SECTION:repo-languages-->
